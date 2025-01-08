@@ -27,5 +27,5 @@ using namespace llvm;
 #define DEBUG_TYPE "cpu0"
 
 extern "C" void LLVMInitializeCpu0Target() {
-
 }
+

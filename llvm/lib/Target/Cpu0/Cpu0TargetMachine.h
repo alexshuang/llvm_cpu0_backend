@@ -14,6 +14,7 @@
 #ifndef LLVM_LIB_TARGET_CPU0_CPU0TARGETMACHINE_H
 #define LLVM_LIB_TARGET_CPU0_CPU0TARGETMACHINE_H
 
-// #include "Cpu0Config.h"
+#include "Cpu0Config.h"
 
 #endif
+

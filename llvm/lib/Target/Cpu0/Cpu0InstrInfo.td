@@ -180,3 +180,4 @@ let addr=0 in
 // Small immediates
 def : Pat<(i32 immSExt16:$in),
           (ADDiu ZERO, imm:$in)>;
+

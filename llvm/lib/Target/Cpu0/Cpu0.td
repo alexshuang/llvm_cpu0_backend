@@ -84,7 +84,6 @@ include "Cpu0Schedule.td"
 include "Cpu0InstrInfo.td"
 
 def Cpu0InstrInfo : InstrInfo;
-
 //===----------------------------------------------------------------------===//
 // Cpu0 processors supported.
 //===----------------------------------------------------------------------===//
@@ -110,3 +109,4 @@ def Cpu0 : Target {
 // def Cpu0InstrInfo : InstrInfo as before.
   let InstructionSet = Cpu0InstrInfo;
 }
+

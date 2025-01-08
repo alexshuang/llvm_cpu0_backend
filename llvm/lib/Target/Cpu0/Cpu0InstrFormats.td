@@ -125,3 +125,4 @@ class FJ<bits<8> op, dag outs, dag ins, string asmstr, list<dag> pattern,
 
   let Inst{23-0} = addr;
 }
+
