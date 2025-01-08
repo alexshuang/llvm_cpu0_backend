@@ -20,6 +20,8 @@
 
 using namespace llvm;
 
+bool Cpu0DisableUnreconginizedMessage = false;
+
 /// Find KV in array using binary search.
 template <typename T>
 static const T *Find(StringRef S, ArrayRef<T> A) {
@@ -78,8 +80,9 @@ static void ApplyFeatureFlag(FeatureBitset &Bits, StringRef Feature,
       ClearImpliedBits(Bits, FeatureEntry->Value, FeatureTable);
     }
   } else {
-    errs() << "'" << Feature << "' is not a recognized feature for this target"
-           << " (ignoring feature)\n";
+    if (!Cpu0DisableUnreconginizedMessage)
+      errs() << "'" << Feature << "' is not a recognized feature for this target"
+            << " (ignoring feature)\n";
   }
 }
 
@@ -212,6 +215,11 @@ void MCSubtargetInfo::InitMCProcessorInfo(StringRef CPU, StringRef TuneCPU,
     CPUSchedModel = &getSchedModelForCPU(TuneCPU);
   else
     CPUSchedModel = &MCSchedModel::GetDefaultSchedModel();
+  
+  if (TargetTriple.getArch() == llvm::Triple::cpu0 ||
+      TargetTriple.getArch() == llvm::Triple::cpu0el) {
+    Cpu0DisableUnreconginizedMessage = true;
+  }
 }
 
 void MCSubtargetInfo::setDefaultFeatures(StringRef CPU, StringRef TuneCPU,
@@ -279,8 +287,9 @@ FeatureBitset MCSubtargetInfo::ToggleFeature(StringRef Feature) {
                      ProcFeatures);
     }
   } else {
-    errs() << "'" << Feature << "' is not a recognized feature for this target"
-           << " (ignoring feature)\n";
+    if (!Cpu0DisableUnreconginizedMessage)
+      errs() << "'" << Feature << "' is not a recognized feature for this target"
+            << " (ignoring feature)\n";
   }
 
   return FeatureBits;
@@ -312,9 +321,11 @@ const MCSchedModel &MCSubtargetInfo::getSchedModelForCPU(StringRef CPU) const {
 
   if (!CPUEntry) {
     if (CPU != "help") // Don't error if the user asked for help.
-      errs() << "'" << CPU
-             << "' is not a recognized processor for this target"
-             << " (ignoring processor)\n";
+      if (TargetTriple.getArch() != llvm::Triple::cpu0 &&
+          TargetTriple.getArch() != llvm::Triple::cpu0el)
+        errs() << "'" << CPU
+              << "' is not a recognized processor for this target"
+              << " (ignoring processor)\n";
     return MCSchedModel::GetDefaultSchedModel();
   }
   assert(CPUEntry->SchedModel && "Missing processor SchedModel value");
