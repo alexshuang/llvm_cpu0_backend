@@ -33,13 +33,16 @@ public:
   Cpu0FunctionInfo(MachineFunction& MF)
   : MF(MF), 
     VarArgsFrameIndex(0), 
-    MaxCallFrameSize(0)
+    MaxCallFrameSize(0),
+    EmitNOAT(false)
     {}
 
   ~Cpu0FunctionInfo();
 
   int getVarArgsFrameIndex() const { return VarArgsFrameIndex; }
   void setVarArgsFrameIndex(int Index) { VarArgsFrameIndex = Index; }
+  int getEmitNOAT() const { return EmitNOAT; }
+  void setEmitNOAT() { EmitNOAT = true; }
 
 private:
   virtual void anchor();
@@ -50,6 +53,8 @@ private:
   int VarArgsFrameIndex;
 
   unsigned MaxCallFrameSize;
+
+  bool EmitNOAT;
 };
 //@1 }
 
