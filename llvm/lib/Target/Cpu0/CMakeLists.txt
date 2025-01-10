@@ -30,6 +30,8 @@ add_llvm_target(Cpu0CodeGen
   Cpu0Subtarget.cpp
   Cpu0TargetObjectFile.cpp
   Cpu0TargetMachine.cpp
+  Cpu0MCInstLower.cpp
+  Cpu0AsmPrinter.cpp
 
   LINK_COMPONENTS
   Analysis
